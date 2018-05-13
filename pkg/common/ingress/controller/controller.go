@@ -496,6 +496,7 @@ func (ic *GenericController) getBackendServers(ingresses []*extensions.Ingress) 
 		affinity := ic.annotations.SessionAffinity(ing)
 		balance := ic.annotations.BalanceAlgorithm(ing)
 		blueGreen := ic.annotations.BlueGreen(ing)
+		snippet := ic.annotations.ConfigurationSnippet(ing)
 		anns := ic.annotations.Extract(ing)
 		conn := ic.annotations.Connection(ing)
 
@@ -607,6 +608,10 @@ func (ic *GenericController) getBackendServers(ingresses []*extensions.Ingress) 
 
 				if len(ups.BlueGreen.DeployWeight) == 0 {
 					ups.BlueGreen = *blueGreen
+				}
+
+				if len(ups.ConfigurationSnippet.Backend) == 0 {
+					ups.ConfigurationSnippet = snippet
 				}
 
 				if ups.Connection.MaxConnServer == 0 {
